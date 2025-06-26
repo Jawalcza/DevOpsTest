@@ -6,25 +6,25 @@ on:
       - main
 
 jobs:
-  validation:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Salesforce CLI
+      - name: Install Salesforce Unified CLI
         run: |
-          npm install --global sfdx-cli
+          npm install --global @salesforce/cli
 
       - name: Create auth URL file from secret
         run: |
           echo "${{ secrets.SFDX_AUTH_URL }}" > auth-url.txt
 
-      - name: Authenticate to Salesforce Org (using SFDX Auth URL)
+      - name: Authenticate to Salesforce Org via sfdxAuthUrl
         run: |
-          sfdx auth:sfdxurl:store --sfdxurlfile auth-url.txt --setalias myOrg --setdefaultusername
+          sf org login sfdx-url --sfdx-url-file auth-url.txt --alias myOrg --set-default
 
       - name: Verify authentication
         run: |
-          sfdx force:org:display --targetusername myOrg
+          sf org display --target-org myOrg --verbose
