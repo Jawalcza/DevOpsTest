@@ -1,0 +1,30 @@
+name: PR Validation to Main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install --global sfdx-cli
+
+      - name: Create auth URL file from secret
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > auth-url.txt
+
+      - name: Authenticate to Salesforce Org
+        run: |
+          sfdx auth:sfdxurl:store --sfdxurlfile auth-url.txt --setalias myOrg --setdefaultusername
+
+      - name: Verify authentication
+        run: |
+          sfdx force:org:display --targetusername myOrg
