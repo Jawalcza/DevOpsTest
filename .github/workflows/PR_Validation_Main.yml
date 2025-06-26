@@ -1,0 +1,30 @@
+name: PR Validation to Main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Salesforce Unified CLI
+        run: |
+          npm install --global @salesforce/cli
+
+      - name: Create auth URL file from secret
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > auth-url.txt
+
+      - name: Authenticate to Salesforce Org via sfdxAuthUrl
+        run: |
+          sf org login sfdx-url --sfdx-url-file auth-url.txt --alias myOrg --set-default
+
+      - name: Verify authentication
+        run: |
+          sf org display --target-org myOrg --verbose
