@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "${{ secrets.SFDX_AUTH_URL }}" > auth-url.txt
 
-      - name: Authenticate to Salesforce Org
+      - name: Authenticate to Salesforce Org (using SFDX Auth URL)
         run: |
           sfdx auth:sfdxurl:store --sfdxurlfile auth-url.txt --setalias myOrg --setdefaultusername
 
