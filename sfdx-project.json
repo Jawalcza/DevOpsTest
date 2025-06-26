@@ -5,8 +5,8 @@
       "default": true
     }
   ],
-  "name": "DevOpsPipelines",
+  "name": ".",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "64.0"
+  "sourceApiVersion": "62.0"
 }
